@@ -1,16 +1,12 @@
-# online_chess
+# Online Chess Game
+This is an attempt to develop a scalable online multiplayer chess game.
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Technologies
+- Flutter
+- Node.js
+- Express.js
+- Socket.io
+- PostgreSQL (Supabase)
+- Prisma ORM
+- Redis (Storage and Pub/Sub)
+- Resend (Email service)
