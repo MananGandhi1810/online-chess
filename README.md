@@ -1,5 +1,5 @@
 # Online Chess Game
-This is an attempt to develop a scalable online multiplayer chess game.
+This is a scalable online multiplayer chess game (in development) built with Flutter and Node.js.
 
 ## Technologies
 - Flutter
