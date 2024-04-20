@@ -27,7 +27,7 @@ var matchQueue = []
 app.use(express.json())
 app.use(
   cors({
-    origin: 'http://localhost:65244',
+    origin: 'http://localhost:55518',
     credentials: true
   })
 )
@@ -194,7 +194,9 @@ app.get('/getUser', async (req, res) => {
   const { authorization } = req.headers
   console.log(authorization)
   if (!authorization) {
-    return res.json(generateResponse('Missing Authentication Header', false, null))
+    return res.json(
+      generateResponse('Missing Authentication Header', false, null)
+    )
   }
   const token = authorization.split(' ')[1]
   if (!token) {
@@ -231,6 +233,10 @@ io.on('connection', socket => {
           id: decoded.id
         }
       })
+      if (!user) {
+        return
+      }
+      socket.userId = user.id
       const gameId = await redisClient.hGet('users', user.id)
       if (gameId) {
         console.log('User ', user, ' in game:', gameId)
@@ -242,7 +248,6 @@ io.on('connection', socket => {
       if (user) {
         user.password = undefined
         console.log('User created game', user)
-        socket.userId = user.id
         if (matchQueue.length > 0 && matchQueue[0].userId !== socket.userId) {
           const opponent = matchQueue.pop()
           const gameId = Math.random().toString(36).substring(10)

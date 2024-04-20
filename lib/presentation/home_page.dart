@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
     String gameState = context.watch<GameProvider>().game?.boardState ?? "";
     String userColor = "";
     String turn = "";
+    List moves = context.watch<GameProvider>().game?.moves ?? [];
     if (gameState.isNotEmpty) {
       _chessBoardController.loadFen(gameState);
       userColor = context.watch<GameProvider>().game?.whitePlayerUserId ==
@@ -55,13 +56,24 @@ class _HomePageState extends State<HomePage> {
                 enableUserMoves: userColor == turn,
                 boardOrientation:
                     userColor == "w" ? PlayerColor.white : PlayerColor.black,
-                size: MediaQuery.of(context).size.width,
                 onMove: () {
                   debugPrint(
                       "${_chessBoardController.game.history.last.move.fromAlgebraic}, ${_chessBoardController.game.history.last.move.toAlgebraic}, ${_chessBoardController.game.history.last.move.piece.name}");
                   Move move = _chessBoardController.game.history.last.move;
-                  context.read<GameProvider>().makeMove(
-                      "${move.piece.name.toLowerCase() != 'p' ? move.piece.name.toUpperCase() : ''}${move.toAlgebraic}");
+                  String movestr = "";
+                  if (move.piece.name.toLowerCase()[0] == "p") {
+                    movestr = "${move.fromAlgebraic}${move.toAlgebraic}";
+                  } else {
+                    movestr =
+                        "${move.piece.name[0].toUpperCase()}${move.toAlgebraic}";
+                  }
+                  if (move.promotion != null) {
+                    movestr += move.promotion!.toUpperCase();
+                  }
+                  if (move.captured != null) {
+                    movestr = "${movestr[0]}x${movestr.substring(1)}";
+                  }
+                  context.read<GameProvider>().makeMove(movestr);
                 },
               ),
             )
