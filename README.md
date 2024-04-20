@@ -21,5 +21,6 @@ This is a scalable online multiplayer chess game (in development) built with Flu
     - Game Room Creation (Frontend)
     - Game Room Joining (Frontend)
     - Real-time Chess Game (Frontend)
+    - Move History
 - In Progress
     - User Profile Viewing
