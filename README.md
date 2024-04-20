@@ -24,3 +24,24 @@ This is a scalable online multiplayer chess game (in development) built with Flu
     - Move History
 - In Progress
     - User Profile Viewing
+
+## Installation
+1. Clone the repository
+2. Install the dependencies
+    - Flutter
+    - Node.js
+    - PostgreSQL (with Supabase)
+    - Redis (preferably with Docker)
+3. Rename the .env file in the server directory to .env.local and fill in the required environment variables
+4. Run the server
+    ```bash
+    cd server
+    npm install
+    npm run dev
+    ```
+5. Run the client
+    ```bash
+    flutter pub get
+    flutter run
+    ```
+6. Enjoy, and feel free to contribute through issues and pull requests!

@@ -14,6 +14,7 @@ require('dotenv').config()
 const secretKey = process.env.SECRET_KEY
 const resendKey = process.env.RESEND_API_KEY
 const redisUrl = process.env.REDIS_URL
+const resendEmail = process.env.RESEND_EMAIL
 
 const prisma = new PrismaClient()
 const resend = new Resend(resendKey)
@@ -49,7 +50,7 @@ const generateResponse = (message, success, data) => {
 const sendVerificationEmail = async (email, token) => {
   await resend.emails.send({
     to: email,
-    from: 'chess-game@test-email.manangandhi.tech',
+    from: resendEmail,
     subject: 'Verify your email',
     html: `Click on the link to verify your email: <a href="http://localhost:3000/verify-email?token=${token}">Verify</a>`
   })
