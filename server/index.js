@@ -27,7 +27,7 @@ var matchQueue = []
 app.use(express.json())
 app.use(
   cors({
-    origin: 'http://localhost:50793',
+    origin: 'http://localhost:54043',
     credentials: true
   })
 )
@@ -330,6 +330,21 @@ io.on('connection', socket => {
       )
       return
     }
+    if (move === 'resign') {
+      const newGameState = {
+        ...game,
+        boardState: game.boardState,
+        status: 'Completed',
+        winnerId: game.whiteUser === userId ? game.blackUser : game.whiteUser,
+        result: 'Resignation'
+      }
+      publisher.publish('game-update', JSON.stringify({ gameId, newGameState }))
+      redisClient.hDel('games', gameId)
+      redisClient.hDel('users', game.whiteUser)
+      redisClient.hDel('users', game.blackUser)
+      io.to(gameId).emit('game-update', JSON.stringify(newGameState))
+      return
+    }
     const userColor = game.whiteUser === userId ? 'w' : 'b'
     if (userColor !== game.boardState.split(' ')[1]) {
       console.log(
@@ -340,6 +355,7 @@ io.on('connection', socket => {
       )
       return socket.emit('invalid-move', 'Not your turn')
     }
+
     const chessGame = new chess.Chess()
     chessGame.load(game.boardState)
     console.log('Game:', chessGame.fen())
@@ -408,6 +424,7 @@ server.listen(4000, () => {
 
 subscriber.subscribe('game-update', async function (message, channel) {
   const { gameId, newGameState } = JSON.parse(message)
+  console.log('Game update', newGameState)
   const game = await prisma.game.update({
     where: {
       id: gameId

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:online_chess/models/user_model.dart';
 import 'package:online_chess/repositories/game_repository.dart';
 
 import '../models/game_model.dart';
@@ -21,6 +22,16 @@ class GameProvider extends ChangeNotifier {
     debugPrint(_game?.toJson().toString());
     _gameRepository.onMoveMade(onMoveMade);
     notifyListeners();
+  }
+
+  Future<UserModel> getPlayer(String userId) async {
+    try {
+      Map<String, dynamic> player = await _gameRepository.getPlayer(userId);
+      return UserModel.fromJson(player);
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
   }
 
   void onMoveMade(dynamic data) {
@@ -53,6 +64,11 @@ class GameProvider extends ChangeNotifier {
 
   void resetGame() {
     _game = null;
+    notifyListeners();
+  }
+
+  void resignGame() {
+    _gameRepository.makeMove("resign");
     notifyListeners();
   }
 }
