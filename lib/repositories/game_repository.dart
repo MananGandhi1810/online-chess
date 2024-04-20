@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:online_chess/services/network_service.dart';
 import 'package:online_chess/services/socket_service.dart';
 
+import '../constants.dart';
+
 class GameRepository {
   final SocketService _socketService = SocketService();
   final NetworkService _networkService = NetworkService();
-  final String httpBaseUrl = 'https://0e01-2401-4900-1c96-2751-c564-25dd-b4db-4672.ngrok-free.app';
-  final String baseUrl = 'http://localhost:4000/';
+  final String httpBaseUrl = Constants.httpBaseUrl;
+  final String baseUrl = Constants.socketBaseUrl;
 
   void startGame(String token, dynamic Function(dynamic) onGameStarted) async {
     try {

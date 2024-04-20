@@ -33,15 +33,16 @@ This is a scalable online multiplayer chess game (in development) built with Flu
     - PostgreSQL (with Supabase)
     - Redis (preferably with Docker)
 3. Rename the .env file in the server directory to .env.local and fill in the required environment variables
-4. Run the server
+4. Edit server urls in the `lib/constants.dart` file
+5. Run the server
     ```bash
     cd server
     npm install
     npm run dev
     ```
-5. Run the client
+6. Run the client
     ```bash
     flutter pub get
     flutter run
     ```
-6. Enjoy, and feel free to contribute through issues and pull requests!
+7. Enjoy, and feel free to contribute through issues and pull requests!
