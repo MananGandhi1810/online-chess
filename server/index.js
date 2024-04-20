@@ -8,6 +8,7 @@ const { Resend } = require('resend')
 const bcrypt = require('bcrypt')
 const redis = require('redis')
 const chess = require('chess.js')
+const cors = require('cors')
 
 require('dotenv').config()
 const secretKey = process.env.SECRET_KEY
@@ -24,6 +25,12 @@ const redisClient = publisher.duplicate()
 var matchQueue = []
 
 app.use(express.json())
+app.use(
+  cors({
+    origin: 'http://localhost:65244',
+    credentials: true
+  })
+)
 
 const generateResponse = (message, success, data) => {
   if (!success) {
@@ -181,6 +188,32 @@ app.get('/resend-verification-email', async (req, res) => {
   const token = jsonwebtoken.sign({ id: user.id }, secretKey)
   sendVerificationEmail(user.email, token)
   res.json(generateResponse('Verification email sent', true, null))
+})
+
+app.get('/getUser', async (req, res) => {
+  const { authorization } = req.headers
+  console.log(authorization)
+  if (!authorization) {
+    return res.json(generateResponse('Missing Authentication Header', false, null))
+  }
+  const token = authorization.split(' ')[1]
+  if (!token) {
+    return res.json(generateResponse('Invalid token', false, null))
+  }
+  const decoded = jsonwebtoken.verify(token, secretKey)
+  if (decoded) {
+    const user = await prisma.user.findFirst({
+      where: {
+        id: decoded.id
+      }
+    })
+    if (user) {
+      user.password = undefined
+      return res.json(generateResponse('User found', true, user))
+    } else {
+      return res.json(generateResponse('User not found', false, null))
+    }
+  }
 })
 
 io.on('connection', socket => {

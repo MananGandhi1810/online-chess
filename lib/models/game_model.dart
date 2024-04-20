@@ -3,7 +3,7 @@ class GameModel {
   String whitePlayerUserId;
   String blackPlayerUserId;
   String status;
-  List<String> moves;
+  List moves;
   String? result;
   String boardState;
 
@@ -19,9 +19,9 @@ class GameModel {
 
   factory GameModel.fromJson(Map<String, dynamic> json) {
     return GameModel(
-      id: json['id'],
-      whitePlayerUserId: json['whitePlayerUserId'],
-      blackPlayerUserId: json['blackPlayerUserId'],
+      id: json['gameId'],
+      whitePlayerUserId: json['whiteUser'],
+      blackPlayerUserId: json['blackUser'],
       status: json['status'],
       moves: json['moves'],
       result: json['result'],
