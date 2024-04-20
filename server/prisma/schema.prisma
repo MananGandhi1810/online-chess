@@ -24,6 +24,7 @@ model User {
   blackGames Game[]   @relation("BlackUser")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  Game       Game[]
 }
 
 model Game {
@@ -38,4 +39,6 @@ model Game {
   moves       String[]
   result      String?
   boardState  String
+  winner      User?    @relation(fields: [winnerId], references: [id])
+  winnerId    String?
 }

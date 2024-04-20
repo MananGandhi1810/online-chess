@@ -50,4 +50,9 @@ class GameProvider extends ChangeNotifier {
       rethrow;
     }
   }
+
+  void resetGame() {
+    _game = null;
+    notifyListeners();
+  }
 }

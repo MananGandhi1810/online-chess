@@ -27,7 +27,7 @@ var matchQueue = []
 app.use(express.json())
 app.use(
   cors({
-    origin: 'http://localhost:55518',
+    origin: 'http://localhost:50793',
     credentials: true
   })
 )
@@ -218,6 +218,23 @@ app.get('/getUser', async (req, res) => {
   }
 })
 
+app.get('/getUserData', async (req, res) => {
+  const { id } = req.query
+  if (!id) {
+    return res.json(generateResponse('Please provide user ID', false, null))
+  }
+  const user = await prisma.user.findFirst({
+    where: {
+      id: id
+    }
+  })
+  if (user) {
+    user.password = undefined
+    return res.json(generateResponse('User found', true, user))
+  }
+  res.json(generateResponse('User not found', false, null))
+})
+
 io.on('connection', socket => {
   console.log('User connected')
 
@@ -322,7 +339,6 @@ io.on('connection', socket => {
         game.boardState.split(' ')[1]
       )
       return socket.emit('invalid-move', 'Not your turn')
-      return
     }
     const chessGame = new chess.Chess()
     chessGame.load(game.boardState)
@@ -339,7 +355,7 @@ io.on('connection', socket => {
       game = {
         ...game,
         status: 'Completed',
-        winner,
+        winnerId: winner,
         result: 'Checkmate'
       }
     }
@@ -399,7 +415,9 @@ subscriber.subscribe('game-update', async function (message, channel) {
     data: {
       boardState: newGameState.boardState,
       moves: newGameState.moves,
-      status: newGameState.status
+      status: newGameState.status,
+      winnerId: newGameState.winner || null,
+      result: newGameState.result || null
     }
   })
 })

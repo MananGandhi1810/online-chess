@@ -1,3 +1,5 @@
+import 'user_model.dart';
+
 class GameModel {
   String id;
   String whitePlayerUserId;
@@ -6,6 +8,8 @@ class GameModel {
   List moves;
   String? result;
   String boardState;
+  UserModel? winner;
+  String? winnerId;
 
   GameModel({
     required this.id,
@@ -15,6 +19,8 @@ class GameModel {
     required this.moves,
     required this.result,
     required this.boardState,
+    this.winner,
+    this.winnerId,
   });
 
   factory GameModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +32,8 @@ class GameModel {
       moves: json['moves'],
       result: json['result'],
       boardState: json['boardState'],
+      winner: json['winner'] != null ? UserModel.fromJson(json['winner']) : null,
+      winnerId: json['winnerId'],
     );
   }
 
@@ -38,6 +46,8 @@ class GameModel {
       'moves': moves,
       'result': result,
       'boardState': boardState,
+      'winner': winner?.toJson(),
+      'winnerId': winnerId,
     };
   }
 }
