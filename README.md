@@ -22,6 +22,13 @@ This is a scalable online multiplayer chess game (in development) built with Flu
     - Game Room Joining (Frontend)
     - Real-time Chess Game (Frontend)
     - Move History
+    - Mobile and Web Support
+    - Move Validation
+    - Checkmate Detection
+    - Stalemate Detection
+    - Draw Detection
+    - Resignation
+    - Game Caching (Redis)
 - Planned
     - User Profile Viewing
     - Game Room Chat
