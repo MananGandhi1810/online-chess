@@ -8,6 +8,8 @@ import 'package:online_chess/providers/game_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
+import 'components/desktop_game_layout.dart';
+import 'components/mobile_home_layout.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -70,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    Future.delayed(Duration(milliseconds: 100), () {
+                    Future.delayed(const Duration(milliseconds: 100), () {
                       context.read<GameProvider>().resetGame();
                     });
                   },
@@ -101,135 +103,21 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: hasGameStarted
-          ? Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      opponent != null
-                          ? ListTile(
-                              leading: const Icon(Icons.person),
-                              title: Text(opponent!.name),
-                              subtitle: Text(opponent!.email),
-                            )
-                          : const ListTile(
-                              leading: CircularProgressIndicator(),
-                            ),
-                      Expanded(
-                        child: ChessBoard(
-                          controller: _chessBoardController,
-                          enableUserMoves: userColor == turn,
-                          boardOrientation: userColor == "w"
-                              ? PlayerColor.white
-                              : PlayerColor.black,
-                          onMove: () {
-                            Move move =
-                                _chessBoardController.game.history.last.move;
-                            String movestr = "";
-                            if (move.piece.name.toLowerCase()[0] == "p") {
-                              movestr =
-                                  "${move.fromAlgebraic}${move.toAlgebraic}";
-                            } else {
-                              movestr =
-                                  "${move.piece.name[0].toUpperCase()}${move.fromAlgebraic[0]}${move.toAlgebraic}";
-                            }
-                            if (move.promotion != null) {
-                              movestr += move.promotion!.toUpperCase();
-                            }
-                            if (move.captured != null) {
-                              movestr = "${movestr[0]}x${movestr.substring(1)}";
-                            }
-                            if (move.fromAlgebraic == "e1" &&
-                                move.toAlgebraic == "g1") {
-                              movestr = "O-O";
-                            }
-                            if (move.fromAlgebraic == "e1" &&
-                                move.toAlgebraic == "c1") {
-                              movestr = "O-O-O";
-                            }
-                            if (move.fromAlgebraic == "e8" &&
-                                move.toAlgebraic == "g8") {
-                              movestr = "O-O";
-                            }
-                            if (move.fromAlgebraic == "e8" &&
-                                move.toAlgebraic == "c8") {
-                              movestr = "O-O-O";
-                            }
-                            context.read<GameProvider>().makeMove(movestr);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    children: [
-                      const Text(
-                        "Moves",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: (moves.length / 2).ceil(),
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(moves[index * 2]),
-                                  (index * 2) + 1 < moves.length
-                                      ? Text(" ${moves[(index * 2) + 1]}")
-                                      : const SizedBox(),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text("Resign Game"),
-                                content: const Text(
-                                    "Are you sure you want to resign the game?"),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text("Cancel"),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                      context.read<GameProvider>().resignGame();
-                                    },
-                                    child: const Text("Resign"),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        icon: const Icon(Icons.flag),
-                        label: const Text("Resign"),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            )
+          ? MediaQuery.of(context).size.width > 600
+              ? DesktopGameLayout(
+                  chessBoardController: _chessBoardController,
+                  userColor: userColor,
+                  turn: turn,
+                  moves: moves,
+                  opponent: opponent,
+                )
+              : MobileGameLayout(
+                  chessBoardController: _chessBoardController,
+                  userColor: userColor,
+                  turn: turn,
+                  moves: moves,
+                  opponent: opponent,
+                )
           : _gameStartRequested
               ? const Center(
                   child: Column(

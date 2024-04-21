@@ -362,6 +362,7 @@ io.on('connection', socket => {
     console.log('Game:', chessGame.fen())
     try {
       chessGame.move(move)
+      console.log('Move:', chessGame.history())
     } catch (e) {
       console.log('Invalid move:', e)
       return socket.emit('invalid-move', 'Invalid move')
@@ -396,7 +397,7 @@ io.on('connection', socket => {
     const newGameState = {
       ...game,
       boardState: chessGame.fen(),
-      moves: [...game.moves, move]
+      moves: [...game.moves, chessGame.history()[0]]
     }
     delete chessGame
     publisher.publish('game-update', JSON.stringify({ gameId, newGameState }))
