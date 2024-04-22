@@ -57,21 +57,26 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: ListView(
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              context.read<GameProvider>().startGame();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const GamePage(),
-                ),
-              );
-            },
-            child: const Text("Start Game"),
-          ),
-        ],
+      body: SizedBox(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                context.read<GameProvider>().startGame();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const GamePage(),
+                  ),
+                );
+              },
+              child: const Text("Start Game"),
+            ),
+          ],
+        ),
       ),
     );
   }
