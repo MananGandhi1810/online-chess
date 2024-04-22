@@ -32,7 +32,6 @@ This is a scalable online multiplayer chess game (in development) built with Flu
 - Planned
     - User Profile Viewing
     - Game Room Chat
-    - Game Room Settings
     - Elo Rating System
 
 ## Installation
