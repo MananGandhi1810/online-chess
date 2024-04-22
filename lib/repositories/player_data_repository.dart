@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:online_chess/services/network_service.dart';
 
 import '../constants.dart';
