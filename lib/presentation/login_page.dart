@@ -37,6 +37,13 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(4.0),
+                    child: Image.asset(
+                      "assets/logo.jpg",
+                      height: 100,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
                     child: TextFormField(
                       decoration: const InputDecoration(
                         labelText: "Email",

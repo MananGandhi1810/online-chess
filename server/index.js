@@ -60,7 +60,7 @@ const sendVerificationEmail = async (email, token) => {
     to: email,
     from: resendEmail,
     subject: 'Verify your email',
-    html: `Click on the link to verify your email: <a href="http://localhost:3000/verify-email?token=${token}">Verify</a>`
+    html: `Click on the link to verify your email: <a href="http://chess-server.manangandhi.tech/rest/verify-email?token=${token}">Verify</a>`
   })
 }
 
