@@ -262,7 +262,17 @@ app.get('/getUserGames', async (req, res) => {
     }
   })
   if (games) {
-    return res.json(generateResponse('Games found', true, games))
+    var res_games = []
+    games.forEach(game => {
+      game.gameId = game.id
+      game.whiteUser = game.whiteUserId
+      game.blackUser = game.blackUserId
+      delete game.whiteUserId
+      delete game.blackUserId
+      delete game.id
+      res_games.push(game)
+    });
+    return res.json(generateResponse('Games found', true, res_games))
   }
   res.json(generateResponse('Games not found', false, null))
 })

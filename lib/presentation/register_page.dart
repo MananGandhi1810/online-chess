@@ -21,9 +21,6 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Register Page"),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
@@ -128,12 +125,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           return;
                         }
                         try {
-                          Map user = await context.read<AuthProvider>().register(
-                                _nameController.text,
-                                _usernameController.text,
-                                _emailController.text,
-                                _passwordController.text,
-                              );
+                          Map user =
+                              await context.read<AuthProvider>().register(
+                                    _nameController.text,
+                                    _usernameController.text,
+                                    _emailController.text,
+                                    _passwordController.text,
+                                  );
                           debugPrint(user.toString());
                           if (user != {}) {
                             Navigator.pushReplacement(

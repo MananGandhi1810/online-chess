@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:online_chess/presentation/game_page.dart';
 import 'package:online_chess/presentation/splash_page.dart';
 import 'package:online_chess/providers/game_provider.dart';
+import 'package:online_chess/providers/player_data_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../models/game_model.dart';
 import '../providers/auth_provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,6 +16,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<GameModel> userGames = [];
+
+  void getUserGames() {
+    context
+        .read<PlayerDataProvider>()
+        .getPlayerGames(context.read<AuthProvider>().user!.id, false)
+        .then((value) {
+      if (!mounted) return;
+      setState(() {
+        userGames = value;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    // getUserGames();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,20 +57,22 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: ListView(children: [
-        ElevatedButton(
-          onPressed: () {
-            context.read<GameProvider>().startGame();
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const GamePage(),
-              ),
-            );
-          },
-          child: const Text("Start Game"),
-        ),
-      ]),
+      body: ListView(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              context.read<GameProvider>().startGame();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const GamePage(),
+                ),
+              );
+            },
+            child: const Text("Start Game"),
+          ),
+        ],
+      ),
     );
   }
 }

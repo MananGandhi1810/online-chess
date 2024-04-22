@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:online_chess/models/user_model.dart';
 import 'package:online_chess/repositories/game_repository.dart';
 
 import '../models/game_model.dart';

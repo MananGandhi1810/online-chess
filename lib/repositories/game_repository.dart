@@ -1,12 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:online_chess/services/network_service.dart';
 import 'package:online_chess/services/socket_service.dart';
 
 import '../constants.dart';
 
 class GameRepository {
   final SocketService _socketService = SocketService();
-  final NetworkService _networkService = NetworkService();
   final String httpBaseUrl = Constants.httpBaseUrl;
   final String baseUrl = Constants.socketBaseUrl;
 
@@ -14,7 +11,7 @@ class GameRepository {
     try {
       _socketService.connect(baseUrl);
       while (!_socketService.isConnected) {
-        await Future.delayed(Duration(milliseconds: 100));
+        await Future.delayed(const Duration(milliseconds: 100));
       }
       _socketService.emit('create-game', {"token": token});
       _socketService.on('game-start', onGameStarted);

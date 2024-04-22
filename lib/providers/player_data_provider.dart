@@ -29,17 +29,20 @@ class PlayerDataProvider extends ChangeNotifier {
     }
   }
 
-  Future<List<GameModel>> getPlayerGames(String userId) async {
+  Future<List<GameModel>> getPlayerGames(
+      String userId, bool forceRefresh) async {
     try {
-      if (_playerGames.containsKey(userId)) {
+      if (_playerGames.containsKey(userId) && !forceRefresh) {
         return _playerGames[userId]!;
       }
-      Map<String, dynamic> playerGames =
-          await _playerDataRepository.getPlayerGames(userId);
+      List playerGames = await _playerDataRepository.getPlayerGames(userId);
+      debugPrint(playerGames.toString());
       _playerGames[userId] = [];
-      playerGames.forEach((key, value) {
-        _playerGames[key]?.add(GameModel.fromJson(value));
+      playerGames.forEach((game) {
+        debugPrint(game.keys.map((e) => e.toString()).join(","));
+        _playerGames[userId]!.add(GameModel.fromJson(game));
       });
+
       notifyListeners();
       return _playerGames[userId]!;
     } catch (e) {

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:online_chess/services/network_service.dart';
 
 import '../constants.dart';
@@ -6,7 +7,7 @@ class PlayerDataRepository {
   final NetworkService _networkService = NetworkService();
   String baseUrl = Constants.httpBaseUrl;
 
-  Future<Map<String, String>> getPlayerGames(String playerId) async {
+  Future<List> getPlayerGames(String playerId) async {
     try {
       Map<String, dynamic> response = await _networkService.get('$baseUrl/getUserGames?id=$playerId');
       if (!response['success']) {
