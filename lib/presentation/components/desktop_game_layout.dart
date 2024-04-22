@@ -46,6 +46,11 @@ class _DesktopGameLayoutState extends State<DesktopGameLayout> {
 
   @override
   Widget build(BuildContext context) {
+    _chessBoardController = widget.chessBoardController;
+    userColor = widget.userColor;
+    turn = widget.turn;
+    moves = widget.moves;
+    opponent = widget.opponent;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [

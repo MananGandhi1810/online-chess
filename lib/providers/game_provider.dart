@@ -24,16 +24,6 @@ class GameProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<UserModel> getPlayer(String userId) async {
-    try {
-      Map<String, dynamic> player = await _gameRepository.getPlayer(userId);
-      return UserModel.fromJson(player);
-    } catch (e) {
-      debugPrint(e.toString());
-      rethrow;
-    }
-  }
-
   void onMoveMade(dynamic data) {
     Map<String, dynamic> gameData = jsonDecode(data);
     _game = GameModel.fromJson(gameData);
@@ -46,6 +36,7 @@ class GameProvider extends ChangeNotifier {
   }
 
   Future<void> startGame() async {
+    resetGame();
     try {
       String? data = await _storageService.read("user");
       debugPrint(data);

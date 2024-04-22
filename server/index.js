@@ -28,7 +28,7 @@ var matchQueue = []
 app.use(express.json())
 app.use(
   cors({
-    origin: 'http://localhost:54043',
+    origin: 'http://localhost:53700',
     credentials: true
   })
 )
@@ -236,6 +236,29 @@ app.get('/getUserData', async (req, res) => {
   res.json(generateResponse('User not found', false, null))
 })
 
+app.get('/getUserGames', async (req, res) => {
+  const { id } = req.query
+  if (!id) {
+    return res.json(generateResponse('Please provide user ID', false, null))
+  }
+  const games = await prisma.game.findMany({
+    where: {
+      OR: [
+        {
+          whiteUserId: id
+        },
+        {
+          blackUserId: id
+        }
+      ]
+    },
+  })
+  if (games) {
+    return res.json(generateResponse('Games found', true, games))
+  }
+  res.json(generateResponse('Games not found', false, null))
+})
+
 io.on('connection', socket => {
   console.log('User connected')
 
@@ -426,7 +449,6 @@ server.listen(4000, () => {
 
 subscriber.subscribe('game-update', async function (message, channel) {
   const { gameId, newGameState } = JSON.parse(message)
-  console.log('Game update', newGameState)
   const game = await prisma.game.update({
     where: {
       id: gameId

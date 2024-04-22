@@ -4,6 +4,7 @@ import 'package:online_chess/providers/game_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'presentation/splash_page.dart';
+import 'providers/player_data_provider.dart';
 
 void main() {
   runApp(const RootApp());
@@ -21,6 +22,9 @@ class RootApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => GameProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => PlayerDataProvider(),
         ),
       ],
       child: MaterialApp(

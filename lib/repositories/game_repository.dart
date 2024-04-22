@@ -30,16 +30,4 @@ class GameRepository {
   void makeMove(String move) {
     _socketService.emit('move', {"move": move});
   }
-
-  Future<Map<String, dynamic>> getPlayer(String userId) async {
-    try {
-      Map<String, dynamic> data = await _networkService.get('$httpBaseUrl/getUserData?id=$userId');
-      if (!data['success']) {
-        throw Exception(data['message']);
-      }
-      return data['data'];
-    } catch (e) {
-      rethrow;
-    }
-  }
 }
