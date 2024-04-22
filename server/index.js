@@ -10,16 +10,24 @@ const redis = require('redis')
 const chess = require('chess.js')
 const cors = require('cors')
 
-require('dotenv').config()
+require('dotenv').config({ path: './server.env' })
 const secretKey = process.env.SECRET_KEY
 const resendKey = process.env.RESEND_API_KEY
-const redisUrl = process.env.REDIS_URL
+var redisUrl = process.env.REDIS_URL
 const resendEmail = process.env.RESEND_EMAIL
+const NODE_ENV = process.env.NODE_ENV
+const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGIN
 
 const prisma = new PrismaClient()
 const resend = new Resend(resendKey)
 
-const publisher = redis.createClient()
+if (NODE_ENV === 'development') {
+  redisUrl = 'redis://localhost:6379'
+}
+
+const publisher = redis.createClient({
+  url: redisUrl
+})
 const subscriber = publisher.duplicate()
 const redisClient = publisher.duplicate()
 
@@ -28,7 +36,7 @@ var matchQueue = []
 app.use(express.json())
 app.use(
   cors({
-    origin: 'http://localhost:53700',
+    origin: true,
     credentials: true
   })
 )
@@ -251,7 +259,7 @@ app.get('/getUserGames', async (req, res) => {
           blackUserId: id
         }
       ]
-    },
+    }
   })
   if (games) {
     return res.json(generateResponse('Games found', true, games))
@@ -435,9 +443,9 @@ io.on('connection', socket => {
   })
 })
 
-publisher.connect((address = redisUrl))
-subscriber.connect((address = redisUrl))
-redisClient.connect((address = redisUrl))
+publisher.connect()
+subscriber.connect()
+redisClient.connect()
 
 app.listen(3000, () => {
   console.log('Server is running on http://localhost:3000')
