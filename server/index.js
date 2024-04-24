@@ -307,6 +307,9 @@ app.get('/getUserGames', async (req, res) => {
           blackUserId: id
         }
       ]
+    },
+    orderBy: {
+      updatedAt: 'desc'
     }
   })
   if (games) {

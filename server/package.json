@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
+    "build": "docker build . -t manangandhi1810/chess-server",
+    "deploy": "docker push manangandhi1810/chess-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

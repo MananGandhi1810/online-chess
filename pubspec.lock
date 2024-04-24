@@ -145,10 +145,11 @@ packages:
   flutter_chess_board:
     dependency: "direct main"
     description:
-      name: flutter_chess_board
-      sha256: f830a44acca1aec751bd4de551f1e5ac466d8bb67e6476e325c5b693398d5755
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: master
+      resolved-ref: "640dad180b2531e9e7c163bf3901fd4e25dbe9f4"
+      url: "https://github.com/hiulusoy/flutter_chess_board.git"
+    source: git
     version: "1.0.1"
   flutter_launcher_icons:
     dependency: "direct dev"

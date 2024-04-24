@@ -10,16 +10,20 @@ class DesktopGameLayout extends StatefulWidget {
     super.key,
     required this.chessBoardController,
     required this.userColor,
-    required this.turn,
     required this.moves,
     required this.opponent,
+    this.isPastGame = false,
+    this.onMoveSelected,
+    this.suggestedMove,
   });
 
   final ChessBoardController chessBoardController;
   final String userColor;
-  final String turn;
   final List moves;
   final UserModel? opponent;
+  final bool isPastGame;
+  final void Function(int)? onMoveSelected;
+  final List? suggestedMove;
 
   @override
   State<DesktopGameLayout> createState() => _DesktopGameLayoutState();
@@ -28,18 +32,16 @@ class DesktopGameLayout extends StatefulWidget {
 class _DesktopGameLayoutState extends State<DesktopGameLayout> {
   late ChessBoardController _chessBoardController;
   late String userColor;
-  late String turn;
   late List moves;
+  String turn = '';
   late UserModel? opponent;
+  bool isPastGame = false;
+  List? suggestedMove = [];
 
   @override
   void initState() {
     setState(() {
-      _chessBoardController = widget.chessBoardController;
-      userColor = widget.userColor;
-      turn = widget.turn;
-      moves = widget.moves;
-      opponent = widget.opponent;
+      isPastGame = widget.isPastGame;
     });
     super.initState();
   }
@@ -48,9 +50,10 @@ class _DesktopGameLayoutState extends State<DesktopGameLayout> {
   Widget build(BuildContext context) {
     _chessBoardController = widget.chessBoardController;
     userColor = widget.userColor;
-    turn = widget.turn;
     moves = widget.moves;
     opponent = widget.opponent;
+    turn = moves.length % 2 == 0 ? "w" : "b";
+    suggestedMove = widget.suggestedMove;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -74,7 +77,18 @@ class _DesktopGameLayoutState extends State<DesktopGameLayout> {
                   enableUserMoves: userColor == turn,
                   boardOrientation:
                       userColor == "w" ? PlayerColor.white : PlayerColor.black,
+                  arrows: suggestedMove != null && suggestedMove?.length == 2
+                      ? [
+                          BoardArrow(
+                            from: suggestedMove![0],
+                            to: suggestedMove![1],
+                          )
+                        ]
+                      : [],
                   onMove: () {
+                    if (isPastGame) {
+                      return;
+                    }
                     Move move = _chessBoardController.game.history.last.move;
                     String movestr = "";
                     debugPrint(
@@ -117,64 +131,85 @@ class _DesktopGameLayoutState extends State<DesktopGameLayout> {
         ),
         Expanded(
           flex: 1,
-          child: Column(
-            children: [
-              const Text(
-                "Moves",
-                style: TextStyle(fontSize: 20),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: (moves.length / 2).ceil(),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(moves[index * 2]),
-                          (index * 2) + 1 < moves.length
-                              ? Text(" ${moves[(index * 2) + 1]}")
-                              : const SizedBox(),
-                        ],
-                      ),
-                    );
-                  },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                const Text(
+                  "Moves",
+                  style: TextStyle(fontSize: 20),
                 ),
-              ),
-              ElevatedButton.icon(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Resign Game"),
-                        content: const Text(
-                            "Are you sure you want to resign the game?"),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text("Cancel"),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              context.read<GameProvider>().resignGame();
-                            },
-                            child: const Text("Resign"),
-                          ),
-                        ],
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: (moves.length / 2).ceil(),
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                if (widget.onMoveSelected != null) {
+                                  widget.onMoveSelected!(index * 2);
+                                }
+                              },
+                              child: Text(
+                                moves[index * 2],
+                              ),
+                            ),
+                            (index * 2) + 1 < moves.length
+                                ? TextButton(
+                                    onPressed: () {
+                                      if (widget.onMoveSelected != null) {
+                                        widget.onMoveSelected!((index * 2) + 1);
+                                      }
+                                    },
+                                    child: Text(" ${moves[(index * 2) + 1]}"),
+                                  )
+                                : const SizedBox(),
+                          ],
+                        ),
                       );
                     },
-                  );
-                },
-                icon: const Icon(Icons.flag),
-                label: const Text("Resign"),
-              ),
-            ],
+                  ),
+                ),
+                isPastGame
+                    ? Container()
+                    : ElevatedButton.icon(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text("Resign Game"),
+                                content: const Text(
+                                    "Are you sure you want to resign the game?"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      context.read<GameProvider>().resignGame();
+                                    },
+                                    child: const Text("Resign"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        icon: const Icon(Icons.flag),
+                        label: const Text("Resign"),
+                      ),
+              ],
+            ),
           ),
         ),
       ],

@@ -39,7 +39,10 @@ dependencies:
   dio: ^5.4.3+1
   socket_io_client: ^2.0.3+1
   flutter_secure_storage: ^9.0.0
-  flutter_chess_board: ^1.0.1
+  flutter_chess_board: 
+    git: 
+      url: https://github.com/hiulusoy/flutter_chess_board.git
+      ref: master
   url_launcher: ^6.2.6
 
 dev_dependencies:

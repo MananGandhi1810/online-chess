@@ -17,7 +17,7 @@ class GamePage extends StatefulWidget {
 }
 
 class GamePageState extends State<GamePage> {
-  ChessBoardController _chessBoardController = ChessBoardController();
+  final ChessBoardController _chessBoardController = ChessBoardController();
   bool _gameStartRequested = true;
   UserModel? opponent;
   bool _gameOver = false;
@@ -26,7 +26,6 @@ class GamePageState extends State<GamePage> {
   Widget build(BuildContext context) {
     String gameState = context.watch<GameProvider>().game?.boardState ?? "";
     String userColor = "";
-    String turn = "";
     List moves = context.watch<GameProvider>().game?.moves ?? [];
     if (gameState.isNotEmpty) {
       _chessBoardController.loadFen(gameState);
@@ -34,8 +33,6 @@ class GamePageState extends State<GamePage> {
               context.read<AuthProvider>().user?.id
           ? "w"
           : "b";
-      turn =
-          context.watch<GameProvider>().game!.moves.length % 2 == 0 ? "w" : "b";
     }
     bool hasGameStarted = context.watch<GameProvider>().hasGameStarted;
     if (hasGameStarted) {
@@ -100,14 +97,12 @@ class GamePageState extends State<GamePage> {
               ? DesktopGameLayout(
                   chessBoardController: _chessBoardController,
                   userColor: userColor,
-                  turn: turn,
                   moves: moves,
                   opponent: opponent,
                 )
               : MobileGameLayout(
                   chessBoardController: _chessBoardController,
                   userColor: userColor,
-                  turn: turn,
                   moves: moves,
                   opponent: opponent,
                 )

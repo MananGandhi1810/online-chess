@@ -53,7 +53,6 @@ class PlayerDataProvider extends ChangeNotifier {
         game['blackPlayer'] = (await getPlayerData(game['blackUser'])).toJson();
         _playerGames[userId]!.add(GameModel.fromJson(game));
       }
-
       notifyListeners();
       return _playerGames[userId]!;
     } catch (e) {
