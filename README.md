@@ -15,12 +15,9 @@ This is a scalable online multiplayer chess game (in development) built with Flu
 - Completed
     - User Authentication
     - Email Verification
-    - Game Room Creation (Backend)
-    - Game Room Joining (Backend)
-    - Real-time Chess Game (Backend)
-    - Game Room Creation (Frontend)
-    - Game Room Joining (Frontend)
-    - Real-time Chess Game (Frontend)
+    - Game Room Creation
+    - Game Room Joining
+    - Real-time Chess Game
     - Move History
     - Mobile and Web Support
     - Move Validation
@@ -31,10 +28,12 @@ This is a scalable online multiplayer chess game (in development) built with Flu
     - Game Caching (Redis)
     - Disconnection Detection
     - Game History
+    - View Past Games
 - Planned
     - User Profile Viewing
     - Game Room Chat
     - Elo Rating System
+    - In App Updates (Android)
 
 ## Installation
 1. Clone the repository
