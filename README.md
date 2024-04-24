@@ -29,6 +29,8 @@ This is a scalable online multiplayer chess game (in development) built with Flu
     - Draw Detection
     - Resignation
     - Game Caching (Redis)
+    - Disconnection Detection
+    - Game History
 - Planned
     - User Profile Viewing
     - Game Room Chat

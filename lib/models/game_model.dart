@@ -10,6 +10,8 @@ class GameModel {
   String boardState;
   UserModel? winner;
   String? winnerId;
+  UserModel? whitePlayer;
+  UserModel? blackPlayer;
 
   GameModel({
     required this.id,
@@ -21,6 +23,8 @@ class GameModel {
     required this.boardState,
     this.winner,
     this.winnerId,
+    this.whitePlayer,
+    this.blackPlayer,
   });
 
   factory GameModel.fromJson(Map<String, dynamic> json) {
@@ -32,8 +36,15 @@ class GameModel {
       moves: json['moves'],
       result: json['result'],
       boardState: json['boardState'],
-      winner: json['winner'] != null ? UserModel.fromJson(json['winner']) : null,
+      winner:
+          json['winner'] != null ? UserModel.fromJson(json['winner']) : null,
       winnerId: json['winnerId'],
+      whitePlayer: json['whitePlayer'] != null
+          ? UserModel.fromJson(json['whitePlayer'])
+          : null,
+      blackPlayer: json['blackPlayer'] != null
+          ? UserModel.fromJson(json['blackPlayer'])
+          : null,
     );
   }
 
@@ -48,6 +59,8 @@ class GameModel {
       'boardState': boardState,
       'winner': winner?.toJson(),
       'winnerId': winnerId,
+      'whitePlayer': whitePlayer?.toJson(),
+      'blackPlayer': blackPlayer?.toJson(),
     };
   }
 }

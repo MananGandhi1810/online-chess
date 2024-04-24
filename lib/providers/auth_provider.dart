@@ -25,7 +25,16 @@ class AuthProvider extends ChangeNotifier {
       if (token.isEmpty) {
         return;
       }
-      user = await _authRepository.getUserData(token);
+      try {
+        user = await _authRepository.getUserData(token);
+        String newToken = await _authRepository.refreshToken(token);
+        if (newToken.isNotEmpty) {
+          user?.setToken(newToken);
+          _storageService.write("user", jsonEncode(user?.toJson()));
+        }
+      } catch (e) {
+        debugPrint(e.toString());
+      }
       notifyListeners();
     } catch (e) {
       debugPrint(e.toString());

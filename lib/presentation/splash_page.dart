@@ -15,6 +15,7 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   void checkUser() async {
     await context.read<AuthProvider>().getUserData();
+    if (!mounted) return;
     if (context.read<AuthProvider>().isAuthenticated) {
       Navigator.pushReplacement(
         context,

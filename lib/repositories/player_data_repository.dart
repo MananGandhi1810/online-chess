@@ -6,9 +6,9 @@ class PlayerDataRepository {
   final NetworkService _networkService = NetworkService();
   String baseUrl = Constants.httpBaseUrl;
 
-  Future<List> getPlayerGames(String playerId) async {
+  Future<List> getPlayerGames(String playerId, String token) async {
     try {
-      Map<String, dynamic> response = await _networkService.get('$baseUrl/getUserGames?id=$playerId');
+      Map<String, dynamic> response = await _networkService.get('$baseUrl/getUserGames?id=$playerId', token: token);
       if (!response['success']) {
         throw Exception(response['message']);
       }
@@ -18,9 +18,9 @@ class PlayerDataRepository {
     }
   }
 
-  Future<Map<String, dynamic>> getPlayerData(String userId) async {
+  Future<Map<String, dynamic>> getPlayerData(String userId, String token) async {
     try {
-      Map<String, dynamic> data = await _networkService.get('$baseUrl/getUserData?id=$userId');
+      Map<String, dynamic> data = await _networkService.get('$baseUrl/getUserData?id=$userId', token: token);
       if (!data['success']) {
         throw Exception(data['message']);
       }

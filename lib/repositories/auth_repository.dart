@@ -64,4 +64,16 @@ class AuthRepository {
       throw Exception("Failed to fetch user");
     }
   }
+
+  Future<String> refreshToken(String token) async {
+    try {
+      Map<String, dynamic> response =
+          await _networkService.get("$baseUrl/refreshToken", token: token);
+      debugPrint(response.toString());
+      return response['data']['token'];
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception("Failed to refresh token");
+    }
+  }
 }
