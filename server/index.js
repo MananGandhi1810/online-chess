@@ -10,20 +10,21 @@ const redis = require('redis')
 const chess = require('chess.js')
 const cors = require('cors')
 
-require('dotenv').config({ path: './server.env' })
+require('dotenv').config()
 const secretKey = process.env.SECRET_KEY
 const resendKey = process.env.RESEND_API_KEY
 var redisUrl = process.env.REDIS_URL
 const resendEmail = process.env.RESEND_EMAIL
-const NODE_ENV = process.env.NODE_ENV
-const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGIN
+const node_env = process.env.NODE_ENV
 
 const prisma = new PrismaClient()
 const resend = new Resend(resendKey)
 
-if (NODE_ENV === 'development') {
+if (node_env === 'development') {
   redisUrl = 'redis://localhost:6379'
 }
+
+console.log('Redis URL:', redisUrl)
 
 const publisher = redis.createClient({
   url: redisUrl
@@ -201,7 +202,6 @@ app.get('/resend-verification-email', async (req, res) => {
 
 app.get('/getUser', async (req, res) => {
   const { authorization } = req.headers
-  console.log(authorization)
   if (!authorization) {
     return res.json(
       generateResponse('Missing Authentication Header', false, null)
@@ -227,10 +227,48 @@ app.get('/getUser', async (req, res) => {
   }
 })
 
+app.get('/refreshToken', async (req, res) => {
+  const { authorization } = req.headers
+  if (!authorization) {
+    return res.json(
+      generateResponse('Missing Authentication Header', false, null)
+    )
+  }
+  const token = authorization.split(' ')[1]
+  if (!token) {
+    return res.json(generateResponse('Invalid token', false, null))
+  }
+  const decoded = jsonwebtoken.verify(token, secretKey)
+  if (decoded) {
+    const user = await prisma.user.findFirst({
+      where: {
+        id: decoded.id
+      }
+    })
+    if (user) {
+      const newToken = jsonwebtoken.sign({ id: user.id }, secretKey)
+      return res.json(
+        generateResponse('Token refreshed', true, { token: newToken })
+      )
+    }
+  }
+  res.json(generateResponse('Invalid token', false, null))
+})
+
 app.get('/getUserData', async (req, res) => {
   const { id } = req.query
+  const { authorization } = req.headers
   if (!id) {
     return res.json(generateResponse('Please provide user ID', false, null))
+  }
+  if (!authorization) {
+    return res.json(
+      generateResponse('Missing Authentication Header', false, null)
+    )
+  }
+  const token = authorization.split(' ')[1]
+  if (!token) {
+    return res.json(generateResponse('Invalid token', false, null))
   }
   const user = await prisma.user.findFirst({
     where: {
@@ -246,8 +284,18 @@ app.get('/getUserData', async (req, res) => {
 
 app.get('/getUserGames', async (req, res) => {
   const { id } = req.query
+  const { authorization } = req.headers
   if (!id) {
     return res.json(generateResponse('Please provide user ID', false, null))
+  }
+  if (!authorization) {
+    return res.json(
+      generateResponse('Missing Authentication Header', false, null)
+    )
+  }
+  const token = authorization.split(' ')[1]
+  if (!token) {
+    return res.json(generateResponse('Invalid token', false, null))
   }
   const games = await prisma.game.findMany({
     where: {
@@ -271,7 +319,7 @@ app.get('/getUserGames', async (req, res) => {
       delete game.blackUserId
       delete game.id
       res_games.push(game)
-    });
+    })
     return res.json(generateResponse('Games found', true, res_games))
   }
   res.json(generateResponse('Games not found', false, null))
@@ -296,6 +344,7 @@ io.on('connection', socket => {
         return
       }
       socket.userId = user.id
+      redisClient.lPush('online-users', socket.userId)
       const gameId = await redisClient.hGet('users', user.id)
       if (gameId) {
         console.log('User ', user, ' in game:', gameId)
@@ -327,13 +376,63 @@ io.on('connection', socket => {
         } else {
           if (!matchQueue.includes(socket)) {
             matchQueue.push(socket)
-            // console.log('Match queue:', matchQueue)
+            console.log('Match queue:', matchQueue)
             socket.emit('create-game-response', 'Waiting for opponent')
           }
         }
       } else {
         console.log('User not found in DB')
       }
+    }
+  })
+
+  socket.on('disconnect', async () => {
+    console.log('User disconnected')
+    if (!socket.userId) {
+      return
+    }
+    await redisClient.lRem('online-users', 0, socket.userId)
+    if (matchQueue.includes(socket)) {
+      matchQueue = matchQueue.filter(user => user !== socket)
+    }
+    if (socket.userId) {
+      const gameId = await redisClient.hGet('users', socket.userId)
+      setTimeout(async () => {
+        var userIndex = await redisClient.lPos('online-users', socket.userId)
+        console.log(userIndex)
+        if (userIndex !== null) {
+          console.log('User reconnected')
+          return
+        }
+        if (socket.userId) {
+          if (gameId) {
+            const gameState = JSON.parse(
+              await redisClient.hGet('games', gameId)
+            )
+            if (gameState) {
+              if (gameState.status !== 'Completed') {
+                const newGameState = {
+                  ...gameState,
+                  status: 'Completed',
+                  result: 'Opponent Disconnection',
+                  winner:
+                    gameState.whiteUser === socket.userId
+                      ? gameState.blackUser
+                      : gameState.whiteUser
+                }
+                publisher.publish(
+                  'game-update',
+                  JSON.stringify({ gameId, newGameState })
+                )
+                redisClient.hDel('games', gameId)
+                redisClient.hDel('users', gameState.whiteUser)
+                redisClient.hDel('users', gameState.blackUser)
+                io.to(gameId).emit('game-update', JSON.stringify(newGameState))
+              }
+            }
+          }
+        }
+      }, 1 * 60 * 1000)
     }
   })
 
@@ -467,32 +566,40 @@ server.listen(4000, () => {
 
 subscriber.subscribe('game-update', async function (message, channel) {
   const { gameId, newGameState } = JSON.parse(message)
-  const game = await prisma.game.update({
-    where: {
-      id: gameId
-    },
-    data: {
-      boardState: newGameState.boardState,
-      moves: newGameState.moves,
-      status: newGameState.status,
-      winnerId: newGameState.winner || null,
-      result: newGameState.result || null
-    }
-  })
+  try {
+    const game = await prisma.game.update({
+      where: {
+        id: gameId
+      },
+      data: {
+        boardState: newGameState.boardState,
+        moves: newGameState.moves,
+        status: newGameState.status,
+        winnerId: newGameState.winner || null,
+        result: newGameState.result || null
+      }
+    })
+  } catch (e) {
+    console.log(e)
+  }
 })
 
 subscriber.subscribe('game-start', async function (message, channel) {
   const { gameId, gameState } = JSON.parse(message)
   console.log('Game start', gameState)
   console.log(message)
-  const game = await prisma.game.create({
-    data: {
-      id: gameId,
-      whiteUserId: gameState.whiteUser,
-      blackUserId: gameState.blackUser,
-      boardState: gameState.boardState,
-      moves: gameState.moves,
-      status: 'In Progress'
-    }
-  })
+  try {
+    const game = await prisma.game.create({
+      data: {
+        id: gameId,
+        whiteUserId: gameState.whiteUser,
+        blackUserId: gameState.blackUser,
+        boardState: gameState.boardState,
+        moves: gameState.moves,
+        status: 'In Progress'
+      }
+    })
+  } catch (e) {
+    console.log(e)
+  }
 })
