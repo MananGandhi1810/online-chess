@@ -1,5 +1,5 @@
 # Online Chess Game
-This is a scalable online multiplayer chess game (in development) built with Flutter and Node.js. You can play here: [chess.manangandhi.tech](https://chess.manangandhi.tech/)
+This is a scalable online multiplayer chess game (in development) built with Flutter and Node.js. You can play on the web using this [link](https://chess.manangandhi.tech/) or download the Android APK from [here](https://github.com/MananGandhi1810/online-chess/raw/app-release/app-release.apk).
 
 ## Technologies
 - Flutter
