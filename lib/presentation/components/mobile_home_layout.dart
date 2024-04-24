@@ -74,7 +74,7 @@ class _MobileGameLayoutState extends State<MobileGameLayout> {
               Expanded(
                 child: ChessBoard(
                   controller: _chessBoardController,
-                  enableUserMoves: userColor == turn,
+                  enableUserMoves: userColor == turn && !isPastGame,
                   boardOrientation:
                       userColor == "w" ? PlayerColor.white : PlayerColor.black,
                   arrows: suggestedMove != null && suggestedMove?.length == 2

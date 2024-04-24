@@ -85,6 +85,7 @@ class _PastGamePageState extends State<PastGamePage> {
               userColor: userColor,
               moves: moves,
               opponent: opponent,
+              isPastGame: true,
               onMoveSelected: onMoveSelected,
             )
           : MobileGameLayout(
@@ -92,6 +93,7 @@ class _PastGamePageState extends State<PastGamePage> {
               userColor: userColor,
               moves: moves,
               opponent: opponent,
+              isPastGame: true,
               onMoveSelected: onMoveSelected,
             ),
     );
