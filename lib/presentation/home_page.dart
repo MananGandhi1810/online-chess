@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../models/game_model.dart';
 import '../providers/auth_provider.dart';
+import 'past_game_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -46,13 +47,13 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             onPressed: () {
-              context.read<AuthProvider>().logout();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const SplashPage(),
                 ),
               );
+              context.read<AuthProvider>().logout();
             },
             icon: const Icon(Icons.logout),
           ),
@@ -131,11 +132,22 @@ class _HomePageState extends State<HomePage> {
                     )
                   : Container(),
               for (GameModel game in userGames)
-                ListTile(
-                  title: Text(
-                    "${context.watch<AuthProvider>().user!.name} vs. ${game.blackPlayerUserId == context.watch<AuthProvider>().user!.id ? game.whitePlayer?.name ?? "Loading..." : game.blackPlayer?.name ?? "Loading..."}",
+                InkWell(
+                  // onTap: () {
+                  //   Navigator.of(context).push(
+                  //     MaterialPageRoute(
+                  //       builder: (context) => PastGamePage(
+                  //         game: game,
+                  //       ),
+                  //     ),
+                  //   );
+                  // },
+                  child: ListTile(
+                    title: Text(
+                      "${context.watch<AuthProvider>().user!.name} vs. ${game.blackPlayerUserId == context.watch<AuthProvider>().user!.id ? game.whitePlayer?.name ?? "Loading..." : game.blackPlayer?.name ?? "Loading..."}",
+                    ),
+                    subtitle: Text(game.status),
                   ),
-                  subtitle: Text(game.status),
                 ),
             ],
           ),

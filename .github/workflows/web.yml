@@ -49,7 +49,7 @@ jobs:
       with:
         name: web-release
 
-    - name: Deploy to gh-pages
+    - name: Deploy to gh-pages branch
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
