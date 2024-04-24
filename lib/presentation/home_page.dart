@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:online_chess/presentation/game_page.dart';
@@ -5,6 +6,7 @@ import 'package:online_chess/presentation/splash_page.dart';
 import 'package:online_chess/providers/game_provider.dart';
 import 'package:online_chess/providers/player_data_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/game_model.dart';
 import '../providers/auth_provider.dart';
@@ -45,6 +47,46 @@ class _HomePageState extends State<HomePage> {
         title: Text(
             "Welcome, ${context.watch<AuthProvider>().user?.name.split(" ")[0] ?? ""}"),
         actions: [
+          kIsWeb && MediaQuery.of(context).size.width < 600
+              ? IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text("Download Android App"),
+                          content: const Text(
+                              "Do you want to download the android app for this game?"),
+                          actions: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text("No"),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                try {
+                                  launchUrl(
+                                    Uri.parse(
+                                      "https://go.manangandhi.tech/chess-android",
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+                                } catch (e) {
+                                  debugPrint(e.toString());
+                                }
+                              },
+                              child: const Text("Yes!"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.download),
+                )
+              : Container(),
           IconButton(
             onPressed: () {
               Navigator.pushReplacement(
