@@ -10,6 +10,7 @@ This is a scalable online multiplayer chess game (in development) built with Flu
 - Prisma ORM
 - Redis (Storage and Pub/Sub)
 - Resend (Email service)
+- Stockfish-Docker (Optional - [stockfish-docker](https://github.com/samuraitruong/stockfish-docker))
 
 ## Features
 - Completed
