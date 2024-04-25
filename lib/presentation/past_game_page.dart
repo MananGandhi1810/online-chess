@@ -72,13 +72,14 @@ class _PastGamePageState extends State<PastGamePage> {
         });
       }
     }
-    if (selectedMoveNum >= 4) {
-      evaluateMove();
-    } else {
-      setState(() {
-        suggestedMove = [];
-      });
-    }
+    // Disabled move evaluation due to server failure :(
+    // if (selectedMoveNum >= 4) {
+    //   evaluateMove();
+    // } else {
+    //   setState(() {
+    //     suggestedMove = [];
+    //   });
+    // }
   }
 
   @override

@@ -74,24 +74,11 @@ class _MobileGameLayoutState extends State<MobileGameLayout> {
               Expanded(
                 child: ChessBoard(
                   controller: _chessBoardController,
+                  boardColor: BoardColor.green,
                   enableUserMoves: userColor == turn && !isPastGame,
                   boardOrientation:
                       userColor == "w" ? PlayerColor.white : PlayerColor.black,
-                  arrows: suggestedMove != null && suggestedMove?.length == 2
-                      ? [
-                          BoardArrow(
-                            from: suggestedMove![0],
-                            to: suggestedMove![1],
-                            color: Colors.green,
-                          ),
-                          BoardArrow(
-                            from: _chessBoardController
-                                .game.history.last.move.fromAlgebraic,
-                            to: _chessBoardController
-                                .game.history.last.move.toAlgebraic,
-                          ),
-                        ]
-                      : [
+                  arrows: [
                           BoardArrow(
                             from: _chessBoardController
                                 .game.history.last.move.fromAlgebraic,
