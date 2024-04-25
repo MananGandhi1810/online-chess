@@ -82,9 +82,23 @@ class _MobileGameLayoutState extends State<MobileGameLayout> {
                           BoardArrow(
                             from: suggestedMove![0],
                             to: suggestedMove![1],
-                          )
+                            color: Colors.green,
+                          ),
+                          BoardArrow(
+                            from: _chessBoardController
+                                .game.history.last.move.fromAlgebraic,
+                            to: _chessBoardController
+                                .game.history.last.move.toAlgebraic,
+                          ),
                         ]
-                      : [],
+                      : [
+                          BoardArrow(
+                            from: _chessBoardController
+                                .game.history.last.move.fromAlgebraic,
+                            to: _chessBoardController
+                                .game.history.last.move.toAlgebraic,
+                          ),
+                        ],
                   onMove: () {
                     if (isPastGame) {
                       return;

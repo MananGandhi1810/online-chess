@@ -7,7 +7,7 @@ import '../models/game_model.dart';
 import '../models/user_model.dart';
 import '../providers/auth_provider.dart';
 import 'components/desktop_game_layout.dart';
-import 'components/mobile_home_layout.dart';
+import 'components/mobile_game_layout.dart';
 
 class PastGamePage extends StatefulWidget {
   const PastGamePage({super.key, required this.game, this.opponent});
@@ -26,12 +26,30 @@ class _PastGamePageState extends State<PastGamePage> {
   String userColor = '';
   List moves = [];
   int selectedMoveNum = 0;
+  List<String> suggestedMove = [];
+  String fen = '';
 
   void evaluateMove() async {
-    String fen = _chessBoardController.getFen();
-    debugPrint(fen);
+    setState(() {
+      suggestedMove = [];
+    });
     try {
-      await _gameEvalRepository.getEvaluation(fen);
+      _chessBoardController.undoMove();
+      setState(() {
+        fen = _chessBoardController.getFen();
+      });
+      debugPrint(_chessBoardController.getAscii());
+      _chessBoardController.makeMoveWithNormalNotation(moves[selectedMoveNum]);
+      debugPrint(_chessBoardController.getAscii());
+      final Map res = await _gameEvalRepository.getEvaluation(fen);
+      debugPrint(res['result']['bestmove']);
+      String bestMove = res['result']['bestmove'];
+      suggestedMove = [];
+      if (bestMove != "(none)") {
+        setState(() {
+          suggestedMove = [bestMove.substring(0, 2), bestMove.substring(2)];
+        });
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -39,8 +57,7 @@ class _PastGamePageState extends State<PastGamePage> {
 
   void onMoveSelected(int updatedMoveNum) {
     if (updatedMoveNum < selectedMoveNum) {
-      _chessBoardController
-          .loadFen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+      _chessBoardController.resetBoard();
       for (int i = 0; i <= updatedMoveNum; i++) {
         _chessBoardController.makeMoveWithNormalNotation(moves[i]);
         setState(() {
@@ -55,7 +72,13 @@ class _PastGamePageState extends State<PastGamePage> {
         });
       }
     }
-    // evaluateMove();
+    if (selectedMoveNum >= 4) {
+      evaluateMove();
+    } else {
+      setState(() {
+        suggestedMove = [];
+      });
+    }
   }
 
   @override
@@ -66,6 +89,10 @@ class _PastGamePageState extends State<PastGamePage> {
       selectedMoveNum = moves.length - 1;
       _chessBoardController.loadFen(widget.game.boardState);
     });
+    _chessBoardController.resetBoard();
+    for (int i = 0; i < moves.length; i++) {
+      _chessBoardController.makeMoveWithNormalNotation(moves[i]);
+    }
     super.initState();
   }
 
@@ -87,6 +114,7 @@ class _PastGamePageState extends State<PastGamePage> {
               opponent: opponent,
               isPastGame: true,
               onMoveSelected: onMoveSelected,
+              suggestedMove: suggestedMove,
             )
           : MobileGameLayout(
               chessBoardController: _chessBoardController,
@@ -95,6 +123,7 @@ class _PastGamePageState extends State<PastGamePage> {
               opponent: opponent,
               isPastGame: true,
               onMoveSelected: onMoveSelected,
+              suggestedMove: suggestedMove,
             ),
     );
   }

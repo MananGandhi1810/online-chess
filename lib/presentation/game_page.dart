@@ -7,7 +7,7 @@ import '../providers/auth_provider.dart';
 import '../providers/game_provider.dart';
 import '../providers/player_data_provider.dart';
 import 'components/desktop_game_layout.dart';
-import 'components/mobile_home_layout.dart';
+import 'components/mobile_game_layout.dart';
 
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
