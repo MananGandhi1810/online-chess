@@ -1,4 +1,4 @@
-FROM node:lts-alpine3.19
+FROM --platform=linux/amd64 node:lts-alpine3.19
 WORKDIR /appuser
 COPY package.json ./
 COPY index.js ./
