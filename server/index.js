@@ -553,6 +553,30 @@ io.on('connection', socket => {
     }
     io.to(gameId).emit('game-update', JSON.stringify(newGameState))
   })
+
+  socket.on('react', async data => {
+    var userId = socket.userId
+    if (!data) {
+      console.log('No reaction')
+      return
+    }
+    if (!userId) {
+      console.log('User not found')
+      return
+    }
+    const gameId = await redisClient.hGet('users', userId)
+    if (!gameId) {
+      console.log('Game not found')
+      return
+    }
+    data = JSON.parse(data)
+    data = {
+      user: userId,
+      reaction: data['reaction']
+    }
+    console.log('Reaction:', data)
+    io.to(gameId).emit('react', JSON.stringify(data))
+  })
 })
 
 publisher.connect()

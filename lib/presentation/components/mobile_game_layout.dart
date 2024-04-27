@@ -3,7 +3,9 @@ import 'package:flutter_chess_board/flutter_chess_board.dart';
 import 'package:online_chess/models/user_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../providers/auth_provider.dart';
 import '../../providers/game_provider.dart';
+import 'emoji_reactions.dart';
 
 class MobileGameLayout extends StatefulWidget {
   const MobileGameLayout({
@@ -37,6 +39,9 @@ class _MobileGameLayoutState extends State<MobileGameLayout> {
   late UserModel? opponent;
   bool isPastGame = false;
   List? suggestedMove = [];
+  Map<String, String> reactions = {};
+  String userReaction = "";
+  String opponentReaction = "";
 
   @override
   void initState() {
@@ -54,6 +59,16 @@ class _MobileGameLayoutState extends State<MobileGameLayout> {
     opponent = widget.opponent;
     turn = moves.length % 2 == 0 ? "w" : "b";
     suggestedMove = widget.suggestedMove;
+    reactions = context.watch<GameProvider>().reactions;
+    reactions.forEach((key, value) {
+      debugPrint("$key, $value, ${context.read<AuthProvider>().user?.id}");
+      if (context.read<AuthProvider>().user?.id != null &&
+          key == context.read<AuthProvider>().user?.id) {
+        userReaction = value;
+      } else {
+        opponentReaction = value;
+      }
+    });
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -65,7 +80,7 @@ class _MobileGameLayoutState extends State<MobileGameLayout> {
               opponent != null
                   ? ListTile(
                       leading: const Icon(Icons.person),
-                      title: Text(opponent!.name),
+                      title: Text("${opponent!.name} $opponentReaction"),
                       subtitle: Text(opponent!.username),
                     )
                   : const ListTile(
@@ -78,14 +93,17 @@ class _MobileGameLayoutState extends State<MobileGameLayout> {
                   enableUserMoves: userColor == turn && !isPastGame,
                   boardOrientation:
                       userColor == "w" ? PlayerColor.white : PlayerColor.black,
-                  arrows: [
+                  arrows: isPastGame &&
+                          _chessBoardController.game.history.isNotEmpty
+                      ? [
                           BoardArrow(
                             from: _chessBoardController
                                 .game.history.last.move.fromAlgebraic,
                             to: _chessBoardController
                                 .game.history.last.move.toAlgebraic,
                           ),
-                        ],
+                        ]
+                      : [],
                   onMove: () {
                     if (isPastGame) {
                       return;
@@ -176,6 +194,7 @@ class _MobileGameLayoutState extends State<MobileGameLayout> {
                     },
                   ),
                 ),
+                isPastGame ? Container() : const EmojiReactions(),
                 isPastGame
                     ? Container()
                     : ElevatedButton.icon(

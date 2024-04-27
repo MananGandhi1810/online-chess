@@ -20,11 +20,19 @@ class GameRepository {
     }
   }
 
-  void onMoveMade(dynamic Function(dynamic) onMoveMade) {
-    _socketService.on('game-update', onMoveMade);
+  void onReact(dynamic Function(dynamic) onReactF) {
+    _socketService.on('react', onReactF);
+  }
+
+  void onMoveMade(dynamic Function(dynamic) onMoveMadeF) {
+    _socketService.on('game-update', onMoveMadeF);
   }
 
   void makeMove(String move) {
     _socketService.emit('move', {"move": move});
+  }
+
+  void react(String reaction) {
+    _socketService.emit('react', {"reaction": reaction});
   }
 }

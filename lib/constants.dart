@@ -6,5 +6,5 @@ class Constants {
   // static const String domain = 'localhost';
   // static const String httpBaseUrl = 'http://$domain:3000';
   // static const String socketBaseUrl = 'http://$domain:4000';
-  // static const String socketBaseUrl = 'http://$domain:5000';
+  // static const String stockfishBaseUrl = 'http://$domain:5000';
 }
