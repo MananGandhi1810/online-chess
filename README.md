@@ -31,6 +31,7 @@ This is a scalable online multiplayer chess game (in development) built with Flu
     - Game History
     - View Past Games
     - Game Analysis using Stockfish (Deployed using [stockfish-docker](https://github.com/samuraitruong/stockfish-docker)) (Disabled on website and app due to server failure)
+    - Reactions
 - Planned
     - User Profile Viewing
     - Game Room Chat
