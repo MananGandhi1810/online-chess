@@ -186,10 +186,7 @@ class _HomePageState extends State<HomePage> {
                                 builder: (context) => PastGamePage(
                                   game: game,
                                   opponent: game.blackPlayerUserId ==
-                                          context
-                                              .watch<AuthProvider>()
-                                              .user!
-                                              .id
+                                          context.watch<AuthProvider>().user!.id
                                       ? game.whitePlayer
                                       : game.blackPlayer,
                                 ),

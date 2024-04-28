@@ -328,6 +328,32 @@ app.get('/getUserGames', async (req, res) => {
   res.json(generateResponse('Games not found', false, null))
 })
 
+app.get('/searchUser', async (req, res) => {
+  const { username } = req.query
+  const { authorization } = req.headers
+  const token = authorization.split(' ')[1]
+  if (!token) {
+    return res.json(generateResponse('Invalid token', false, null))
+  }
+  if (!username) {
+    return res.json(generateResponse('Please provide username', false, null))
+  }
+  const users = await prisma.user.findMany({
+    where: {
+      username: {
+        contains: username,
+        mode: 'insensitive'
+      }
+    },
+    select: {
+      id: true,
+      username: true,
+      name: true
+    }
+  })
+  return res.json(generateResponse('Search Complete', true, users))
+})
+
 io.on('connection', socket => {
   console.log('User connected')
 

@@ -60,4 +60,17 @@ class PlayerDataProvider extends ChangeNotifier {
       rethrow;
     }
   }
+
+  Future<List<Map>> searchUsername(String username) async {
+    try {
+      String token =
+          jsonDecode(await _storageService.read("user") ?? "")["token"];
+      List<Map> searchResults =
+          await _playerDataRepository.searchUsername(username, token);
+      return searchResults;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
 }
