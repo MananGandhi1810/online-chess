@@ -6,7 +6,7 @@ This is a scalable online multiplayer chess game (in development) built with Flu
 - Node.js
 - Express.js
 - Socket.io
-- PostgreSQL (Supabase)
+- PostgreSQL (Hosted on Supabase)
 - Prisma ORM
 - Redis (Storage and Pub/Sub)
 - Resend (Email service)
