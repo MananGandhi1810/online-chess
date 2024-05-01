@@ -58,4 +58,6 @@ This is a scalable online multiplayer chess game (in development) built with Flu
     flutter pub get
     flutter run
     ```
-7. Enjoy, and feel free to contribute through issues and pull requests!
+
+## Contribution Guidelines
+Read the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information on how to contribute to this project.
