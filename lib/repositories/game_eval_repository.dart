@@ -3,7 +3,7 @@ import 'package:online_chess/constants.dart';
 import 'package:online_chess/services/network_service.dart';
 
 class GameEvalRepository {
-  NetworkService _networkService = NetworkService();
+  final NetworkService _networkService = NetworkService();
 
   Future<Map> getEvaluation(String fen) async {
     try {

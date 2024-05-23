@@ -20,7 +20,7 @@ class PastGamePage extends StatefulWidget {
 }
 
 class _PastGamePageState extends State<PastGamePage> {
-  GameEvalRepository _gameEvalRepository = GameEvalRepository();
+  final GameEvalRepository _gameEvalRepository = GameEvalRepository();
   final ChessBoardController _chessBoardController = ChessBoardController();
   UserModel? opponent;
   String userColor = '';

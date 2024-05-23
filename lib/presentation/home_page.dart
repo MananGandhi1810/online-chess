@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:online_chess/presentation/game_page.dart';
 import 'package:online_chess/presentation/splash_page.dart';
 import 'package:online_chess/providers/game_provider.dart';

@@ -61,7 +61,7 @@ class GamePageState extends State<GamePage> {
         context.watch<GameProvider>().game?.status != "In Progress" &&
         !_gameOver) {
       debugPrint(
-          "${context.watch<GameProvider>().game}, ${context.watch<GameProvider>().game?.status}, ${_gameOver}");
+          "${context.watch<GameProvider>().game}, ${context.watch<GameProvider>().game?.status}, $_gameOver");
       Future.delayed(const Duration(milliseconds: 300), () {
         showDialog(
           context: context,

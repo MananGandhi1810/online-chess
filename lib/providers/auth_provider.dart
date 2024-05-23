@@ -8,8 +8,8 @@ import '../models/user_model.dart';
 
 class AuthProvider extends ChangeNotifier {
   UserModel? user;
-  AuthRepository _authRepository = AuthRepository();
-  StorageService _storageService = StorageService();
+  final AuthRepository _authRepository = AuthRepository();
+  final StorageService _storageService = StorageService();
 
   bool get isAuthenticated => user != null;
 

@@ -8,8 +8,8 @@ import '../models/game_model.dart';
 import '../models/user_model.dart';
 
 class PlayerDataProvider extends ChangeNotifier {
-  Map<String, UserModel> _playerData = {};
-  Map<String, List<GameModel>> _playerGames = {};
+  final Map<String, UserModel> _playerData = {};
+  final Map<String, List<GameModel>> _playerGames = {};
   final PlayerDataRepository _playerDataRepository = PlayerDataRepository();
   final StorageService _storageService = StorageService();
 
