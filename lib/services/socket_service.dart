@@ -22,7 +22,7 @@ class SocketService {
     socket?.emit(event, sendData);
   }
 
-  void on(String event, dynamic Function(dynamic) callback){
+  void on(String event, dynamic Function(dynamic) callback) {
     socket?.on(event, callback);
   }
 }

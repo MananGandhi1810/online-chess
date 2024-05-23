@@ -13,7 +13,7 @@ class EmojiReactions extends StatelessWidget {
       children: [
         IconButton(
           onPressed: () {
-          context.read<GameProvider>().react("😀");
+            context.read<GameProvider>().react("😀");
           },
           icon: const Text(
             "😀",
