@@ -168,26 +168,31 @@ class _MobileGameLayoutState extends State<MobileGameLayout> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            TextButton(
-                              onPressed: () {
-                                if (widget.onMoveSelected != null) {
-                                  widget.onMoveSelected!(index * 2);
-                                }
-                              },
-                              child: Text(
-                                moves[index * 2],
+                            Expanded(
+                              child: TextButton(
+                                onPressed: () {
+                                  if (widget.onMoveSelected != null) {
+                                    widget.onMoveSelected!(index * 2);
+                                  }
+                                },
+                                child: Text(
+                                  moves[index * 2],
+                                ),
                               ),
                             ),
                             (index * 2) + 1 < moves.length
-                                ? TextButton(
-                                    onPressed: () {
-                                      if (widget.onMoveSelected != null) {
-                                        widget.onMoveSelected!((index * 2) + 1);
-                                      }
-                                    },
-                                    child: Text(" ${moves[(index * 2) + 1]}"),
+                                ? Expanded(
+                                    child: TextButton(
+                                      onPressed: () {
+                                        if (widget.onMoveSelected != null) {
+                                          widget
+                                              .onMoveSelected!((index * 2) + 1);
+                                        }
+                                      },
+                                      child: Text(" ${moves[(index * 2) + 1]}"),
+                                    ),
                                   )
-                                : const SizedBox(),
+                                : const Expanded(child: SizedBox()),
                           ],
                         ),
                       );
