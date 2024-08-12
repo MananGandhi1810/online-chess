@@ -23,8 +23,8 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: Center(
+        child: Center(
+          child: SingleChildScrollView(
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.8 < 400
                   ? MediaQuery.of(context).size.width * 0.8
