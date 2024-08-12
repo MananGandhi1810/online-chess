@@ -171,7 +171,7 @@ class _HomePageState extends State<HomePage> {
                       const Padding(
                         padding: EdgeInsets.all(12),
                       ),
-                      userGames != []
+                      userGames.isNotEmpty
                           ? const Text(
                               "Your past games",
                               style: TextStyle(fontSize: 16),
