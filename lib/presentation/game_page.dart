@@ -145,6 +145,9 @@ class GamePageState extends State<GamePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircularProgressIndicator(),
+                      Padding(
+                        padding: EdgeInsets.all(8),
+                      ),
                       Text("Waiting for an opponent to connect..."),
                     ],
                   ),
