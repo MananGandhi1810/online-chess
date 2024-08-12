@@ -111,22 +111,31 @@ class GamePageState extends State<GamePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Game Over. Do you want to play again?"),
-                      ElevatedButton(
-                        onPressed: () {
-                          context.read<GameProvider>().startGame();
-                          setState(() {
-                            _gameOver = false;
-                            _gameStartRequested = true;
-                          });
-                        },
-                        child: const Text("Play Again"),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text("Game Over. Do you want to play again?"),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text("No, Go Back to Home"),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            context.read<GameProvider>().startGame();
+                            setState(() {
+                              _gameOver = false;
+                              _gameStartRequested = true;
+                            });
+                          },
+                          child: const Text("Play Again"),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text("No, Go Back to Home"),
+                        ),
                       ),
                     ],
                   ),
