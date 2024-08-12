@@ -79366,7 +79366,7 @@ return new A.Tf(new A.lc(B.cs,s),new A.lc(B.cs,s),new A.lc(B.cs,s),new A.lc(B.cs
 A.Tf.prototype={
 J(a){var s=this,r=null,q=t.w
 q=A.bs(a,r,q).w.a.a*0.8<400?A.bs(a,r,q).w.a.a*0.8:400
-return A.zB(r,new A.bo(B.c_,A.ary(A.kh(A.es(A.avo(A.hZ(A.a([new A.bo(B.bf,A.ow("assets/logo.jpg",r,100,r,r),r),new A.bo(B.bf,A.AF(s.d,B.Dn,!1,new A.al_()),r),new A.bo(B.bf,A.AF(s.e,B.Do,!1,new A.al0()),r),new A.bo(B.bf,A.AF(s.f,B.m0,!1,new A.al1()),r),new A.bo(B.bf,A.AF(s.r,B.m_,!0,new A.al2()),r),new A.bo(B.bf,A.wU(!1,B.Qn,B.r,r,r,r,r,r,new A.al3(s,a),r,r),r)],t.p),B.a0,B.cI,B.ax),s.w),r,q),r,r)),r))}}
+return A.zB(r,new A.bo(B.c_,A.kh(A.ary(A.es(A.avo(A.hZ(A.a([new A.bo(B.bf,A.ow("assets/logo.jpg",r,100,r,r),r),new A.bo(B.bf,A.AF(s.d,B.Dn,!1,new A.al_()),r),new A.bo(B.bf,A.AF(s.e,B.Do,!1,new A.al0()),r),new A.bo(B.bf,A.AF(s.f,B.m0,!1,new A.al1()),r),new A.bo(B.bf,A.AF(s.r,B.m_,!0,new A.al2()),r),new A.bo(B.bf,A.wU(!1,B.Qn,B.r,r,r,r,r,r,new A.al3(s,a),r,r),r)],t.p),B.a0,B.cI,B.ax),s.w),r,q)),r,r),r))}}
 A.al_.prototype={
 $1(a){var s
 if(a.length===0)return"Please enter your username"
@@ -79696,7 +79696,7 @@ aj5(a,b,c,d,e){var s=0,r=A.M(t.a),q,p=2,o,n=this,m,l,k,j,i
 var $async$kD=A.N(function(f,g){if(f===1){o=g
 s=p}while(true)switch(s){case 0:p=4
 s=7
-return A.R(n.a.tH("https://chess-server.manangandhi.tech/rest/register",A.Z(["name",b,"username",c,"email",d,"password",e],t.N,t.z)),$async$kD)
+return A.R(n.a.tH("http://localhost:3000/register",A.Z(["name",b,"username",c,"email",d,"password",e],t.N,t.z)),$async$kD)
 case 7:m=g
 if(J.c(J.ap(m,"success"),!1)){k=A.cU(J.ap(m,"message"))
 throw A.d(k)}q=m
@@ -79722,7 +79722,7 @@ agL(a,b){var s=0,r=A.M(t.Ct),q,p=2,o,n=this,m,l,k,j,i,h
 var $async$kv=A.N(function(c,d){if(c===1){o=d
 s=p}while(true)switch(s){case 0:p=4
 s=7
-return A.R(n.a.tH("https://chess-server.manangandhi.tech/rest/login",A.Z(["email",a,"password",b],t.N,t.z)),$async$kv)
+return A.R(n.a.tH("http://localhost:3000/login",A.Z(["email",a,"password",b],t.N,t.z)),$async$kv)
 case 7:m=d
 A.bY().$1(J.by(m))
 if(J.c(J.ap(m,"success"),!1)){j=A.cU(J.ap(m,"message"))
@@ -79751,7 +79751,7 @@ TR(a){var s=0,r=A.M(t.Ct),q,p=2,o,n=this,m,l,k,j,i,h
 var $async$u9=A.N(function(b,c){if(b===1){o=c
 s=p}while(true)switch(s){case 0:p=4
 s=7
-return A.R(n.a.lM(0,"https://chess-server.manangandhi.tech/rest/getUser",a),$async$u9)
+return A.R(n.a.lM(0,"http://localhost:3000/getUser",a),$async$u9)
 case 7:m=c
 A.bY().$1(J.by(m))
 l=A.B5(J.ap(m,"data"))
@@ -79779,7 +79779,7 @@ aj3(a){var s=0,r=A.M(t.N),q,p=2,o,n=this,m,l,k,j,i
 var $async$z0=A.N(function(b,c){if(b===1){o=c
 s=p}while(true)switch(s){case 0:p=4
 s=7
-return A.R(n.a.lM(0,"https://chess-server.manangandhi.tech/rest/refreshToken",a),$async$z0)
+return A.R(n.a.lM(0,"http://localhost:3000/refreshToken",a),$async$z0)
 case 7:m=c
 A.bY().$1(J.by(m))
 k=J.ap(J.ap(m,"data"),"token")
@@ -79809,7 +79809,7 @@ US(a,b){var s=0,r=A.M(t.z),q=1,p,o=this,n,m,l,k,j
 var $async$ut=A.N(function(c,d){if(c===1){p=d
 s=q}while(true)switch(s){case 0:q=3
 n=o.a
-n.abX("https://chess-server.manangandhi.tech")
+n.abX("http://localhost:4000")
 m=t.z
 case 6:if(!!0){s=7
 break}l=n.a
@@ -79840,7 +79840,7 @@ TK(a,b){var s=0,r=A.M(t.j),q,p=2,o,n=this,m,l,k,j
 var $async$hz=A.N(function(c,d){if(c===1){o=d
 s=p}while(true)switch(s){case 0:p=4
 s=7
-return A.R(n.a.lM(0,"https://chess-server.manangandhi.tech/rest/getUserGames?id="+a,b),$async$hz)
+return A.R(n.a.lM(0,"http://localhost:3000/getUserGames?id="+a,b),$async$hz)
 case 7:m=d
 if(!J.ap(m,"success")){l=A.cU(J.ap(m,"message"))
 throw A.d(l)}l=J.ap(m,"data")
@@ -79865,7 +79865,7 @@ TI(a,b){var s=0,r=A.M(t.a),q,p=2,o,n=this,m,l,k,j
 var $async$u5=A.N(function(c,d){if(c===1){o=d
 s=p}while(true)switch(s){case 0:p=4
 s=7
-return A.R(n.a.lM(0,"https://chess-server.manangandhi.tech/rest/getUserData?id="+a,b),$async$u5)
+return A.R(n.a.lM(0,"http://localhost:3000/getUserData?id="+a,b),$async$u5)
 case 7:m=d
 if(!J.ap(m,"success")){l=A.cU(J.ap(m,"message"))
 throw A.d(l)}l=J.ap(m,"data")
