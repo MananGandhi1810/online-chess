@@ -1,15 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:socket_io_client/socket_io_client.dart' as io;
+import 'package:socket_io_client/socket_io_client.dart';
 
 class SocketService {
-  io.Socket? socket;
+  Socket? socket;
 
   bool get isConnected => socket?.connected ?? false;
 
   void connect(String baseUrl) {
-    socket = io.io(baseUrl, <String, dynamic>{
+    socket = io(baseUrl, <String, dynamic>{
       "transports": ["websocket"],
     });
     socket?.connect();
