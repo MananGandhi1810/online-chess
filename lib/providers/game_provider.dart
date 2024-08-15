@@ -20,7 +20,6 @@ class GameProvider extends ChangeNotifier {
   void onGameStarted(dynamic data) {
     Map<String, dynamic> gameData = jsonDecode(data);
     _game = GameModel.fromJson(gameData);
-    debugPrint(_game?.toJson().toString());
     _gameRepository.onMoveMade(onMoveMade);
     notifyListeners();
   }
@@ -28,7 +27,6 @@ class GameProvider extends ChangeNotifier {
   void onMoveMade(dynamic data) {
     Map<String, dynamic> gameData = jsonDecode(data);
     _game = GameModel.fromJson(gameData);
-    debugPrint(_game?.toJson().toString());
     notifyListeners();
   }
 

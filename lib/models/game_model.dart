@@ -47,20 +47,4 @@ class GameModel {
           : null,
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'whitePlayerUserId': whitePlayerUserId,
-      'blackPlayerUserId': blackPlayerUserId,
-      'status': status,
-      'moves': moves,
-      'result': result,
-      'boardState': boardState,
-      'winner': winner?.toJson(),
-      'winnerId': winnerId,
-      'whitePlayer': whitePlayer?.toJson(),
-      'blackPlayer': blackPlayer?.toJson(),
-    };
-  }
 }
