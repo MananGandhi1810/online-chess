@@ -2,7 +2,6 @@ FROM --platform=linux/amd64 node:lts-alpine3.19
 WORKDIR /appuser
 COPY package.json ./
 COPY index.js ./
-COPY .env ./.env
 COPY ./prisma ./
 RUN npm install
 RUN npx prisma generate
