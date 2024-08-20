@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_chess/presentation/login_page.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
@@ -116,6 +117,23 @@ class _RegisterPageState extends State<RegisterPage> {
                           }
                           return null;
                         },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPage(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "Click here to login",
+                          textAlign: TextAlign.right,
+                        ),
                       ),
                     ),
                     Padding(
