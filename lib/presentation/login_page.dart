@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(4.0),
+                      padding: const EdgeInsets.all(6.0),
                       child: TextFormField(
                         decoration: const InputDecoration(
                           labelText: "Email",
