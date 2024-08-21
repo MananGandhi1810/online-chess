@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:online_chess/presentation/game_page.dart';
-import 'package:online_chess/presentation/splash_page.dart';
-import 'package:online_chess/providers/game_provider.dart';
-import 'package:online_chess/providers/player_data_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../presentation/game_page.dart';
+import '../presentation/splash_page.dart';
+import '../providers/game_provider.dart';
+import '../providers/player_data_provider.dart';
 import '../models/game_model.dart';
 import '../providers/auth_provider.dart';
 import 'past_game_page.dart';
@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    Future.delayed(const Duration(milliseconds: 200), getUserGames);
+    Future.delayed(Duration.zero, getUserGames);
     super.initState();
   }
 

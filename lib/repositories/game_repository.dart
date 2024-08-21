@@ -11,7 +11,7 @@ class GameRepository {
     try {
       _socketService.connect(baseUrl);
       while (!_socketService.isConnected) {
-        await Future.delayed(const Duration(milliseconds: 100));
+        await Future.delayed(const Duration(milliseconds: 50));
       }
       _socketService.emit('create-game', {"token": token});
       _socketService.on('game-start', onGameStarted);
