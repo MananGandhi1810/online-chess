@@ -52,7 +52,7 @@ class EmojiReactions extends StatelessWidget {
             context.read<GameProvider>().react("😯");
           },
           icon: const Text(
-            "😎",
+            "😯",
             style: TextStyle(fontSize: 22),
           ),
         ),
