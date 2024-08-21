@@ -47,6 +47,15 @@ class EmojiReactions extends StatelessWidget {
             style: TextStyle(fontSize: 22),
           ),
         ),
+        IconButton(
+          onPressed: () {
+            context.read<GameProvider>().react("😯");
+          },
+          icon: const Text(
+            "😎",
+            style: TextStyle(fontSize: 22),
+          ),
+        ),
       ],
     );
   }
