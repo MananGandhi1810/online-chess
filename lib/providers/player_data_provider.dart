@@ -49,8 +49,12 @@ class PlayerDataProvider extends ChangeNotifier {
       _playerGames[userId] = [];
       for (var game in playerGames) {
         debugPrint(game.keys.map((e) => e.toString()).join(","));
-        game['whitePlayer'] = (await getPlayerData(game['whiteUser'])).toJson();
-        game['blackPlayer'] = (await getPlayerData(game['blackUser'])).toJson();
+        List<UserModel> res = await Future.wait([
+          getPlayerData(game['whiteUser']),
+          getPlayerData(game['blackUser'])
+        ]);
+        game['whitePlayer'] = res[0].toJson();
+        game['blackPlayer'] = res[1].toJson();
         _playerGames[userId]!.add(GameModel.fromJson(game));
       }
       notifyListeners();
