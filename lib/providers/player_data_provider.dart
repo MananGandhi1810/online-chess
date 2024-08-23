@@ -25,7 +25,9 @@ class PlayerDataProvider extends ChangeNotifier {
           jsonDecode(await _storageService.read("user") ?? "")["token"];
       Map<String, dynamic> playerData =
           await _playerDataRepository.getPlayerData(userId, token);
+      debugPrint(playerData.toString());
       _playerData[userId] = UserModel.fromJson(playerData);
+      notifyListeners();
       return _playerData[userId]!;
     } catch (e) {
       debugPrint(e.toString());
@@ -45,23 +47,12 @@ class PlayerDataProvider extends ChangeNotifier {
           await _playerDataRepository.getPlayerGames(userId, token);
       debugPrint(playerGames.toString());
       _playerGames[userId] = [];
-      List<Future<List<UserModel>>> playerLoaders = [];
       for (var game in playerGames) {
-        playerLoaders.add(Future.wait([
-          getPlayerData(game['whiteUser']),
-          getPlayerData(game['blackUser'])
-        ]));
+        debugPrint(game.keys.map((e) => e.toString()).join(","));
+        game['whitePlayer'] = (await getPlayerData(game['whiteUser'])).toJson();
+        game['blackPlayer'] = (await getPlayerData(game['blackUser'])).toJson();
+        _playerGames[userId]!.add(GameModel.fromJson(game));
       }
-      await Future.wait(playerLoaders).then((games) {
-        for (int i = 0; i < playerGames.length; i++) {
-          debugPrint(games[i][0].toJson().toString());
-          debugPrint(games[i][1].toJson().toString());
-          playerGames[i]['whitePlayer'] = games[i][0].toJson();
-          playerGames[i]['blackPlayer'] = games[i][1].toJson();
-        }
-      });
-      _playerGames[userId] =
-          playerGames.map((game) => GameModel.fromJson(game)).toList();
       notifyListeners();
       return _playerGames[userId]!;
     } catch (e) {
