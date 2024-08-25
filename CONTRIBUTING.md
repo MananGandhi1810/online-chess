@@ -7,7 +7,7 @@ In order to contribute to this project, you must follow the following steps:
     - Node.js
     - PostgreSQL (with Supabase)
     - Redis (preferably with Docker)
-3. Rename the .env file in the server directory to .env.local and fill in the required environment variables
+3. Rename the .env.example file in the server/ directory to .env and fill in the required environment variables
 4. Edit server urls in the `lib/constants.dart` file
 5. Run the server
     ```bash
