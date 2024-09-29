@@ -508,7 +508,7 @@ io.on("connection", (socket) => {
         ...game,
         boardState: game.boardState,
         status: "Completed",
-        winnerId: game.whiteUser === userId ? game.blackUser : game.whiteUser,
+        winner: game.whiteUser === userId ? game.blackUser : game.whiteUser,
         result: "Resignation",
       };
       publisher.publish(
@@ -548,7 +548,7 @@ io.on("connection", (socket) => {
       game = {
         ...game,
         status: "Completed",
-        winnerId: winner,
+        winner: winner,
         result: "Checkmate",
       };
     }
