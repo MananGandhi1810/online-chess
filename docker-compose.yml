@@ -1,7 +1,7 @@
 name: chess
 
 services:
-    online-ide:
+    online-chess:
         image: ghcr.io/manangandhi1810/chess-server
         restart: unless-stopped
         ports:
