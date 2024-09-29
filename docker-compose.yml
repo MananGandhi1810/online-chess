@@ -1,7 +1,7 @@
 name: chess
 
 services:
-    server:
+    online-ide:
         image: ghcr.io/manangandhi1810/chess-server
         restart: unless-stopped
         ports:
@@ -28,7 +28,7 @@ services:
             - POSTGRESQL_REPLICATION_PASSWORD=repl_user
             - POSTGRESQL_USERNAME=postgres
             - POSTGRESQL_PASSWORD=postgres
-            - POSTGRESQL_DATABASE=postgres
+            - POSTGRESQL_DATABASE=cloud-ide
         labels:
             - "com.centurylinklabs.watchtower.enable=false"
 
