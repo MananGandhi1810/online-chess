@@ -20,7 +20,7 @@ jobs:
           distribution: 'zulu'
           java-version: "12.x"
           cache: gradle
-      - uses: subosito/flutter-action@latest
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.16"
           channel: 'stable'
@@ -33,7 +33,7 @@ jobs:
         run: flutter build web --release --web-renderer canvaskit
      
       - name: Upload Web Build Files
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: web-release
           path: ./build/web
@@ -45,7 +45,7 @@ jobs:
 
     steps:
     - name: Download Web Release
-      uses: actions/download-artifact@latest
+      uses: actions/download-artifact@v4
       with:
         name: web-release
 
