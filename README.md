@@ -1,52 +1,56 @@
 # Online Chess Game
+
 This is a scalable online multiplayer chess game (in development) built with Flutter and Node.js. You can play on the web using this [link](https://chess.manangandhi.tech/) or download the Android APK from [here](https://github.com/MananGandhi1810/online-chess/raw/app-release/app-release.apk).
 
 ## Technologies
-- Flutter
-- Node.js
-- Express.js
-- Socket.io
-- PostgreSQL (Hosted on Supabase)
-- Prisma ORM
-- Redis (Storage and Pub/Sub)
-- Resend (Email service)
-- Stockfish-Docker (Optional - [stockfish-docker](https://github.com/samuraitruong/stockfish-docker))
+
+-   Flutter
+-   Node.js
+-   Express.js
+-   Socket.io
+-   PostgreSQL
+-   Prisma ORM
+-   Redis (Storage and Pub/Sub)
+-   Resend (Email service)
+-   Stockfish-Docker (Optional - [stockfish-docker](https://github.com/samuraitruong/stockfish-docker))
+-   Docker
 
 ## Features
-- Completed
-    - User Authentication
-    - Email Verification
-    - Game Room Creation
-    - Game Room Joining
-    - Real-time Chess Game
-    - Move History
-    - Mobile and Web Support
-    - Move Validation
-    - Checkmate Detection
-    - Stalemate Detection
-    - Draw Detection
-    - Resignation
-    - Game Caching (Redis)
-    - Disconnection Detection
-    - Game History
-    - View Past Games
-    - Game Analysis using Stockfish (Deployed using [stockfish-docker](https://github.com/samuraitruong/stockfish-docker)) (Disabled on website and app due to server failure)
-    - Reactions
+
+-   Completed
+    -   User Authentication
+    -   Email Verification
+    -   Game Room Creation
+    -   Game Room Joining
+    -   Real-time Chess Game
+    -   Move History
+    -   Mobile and Web Support
+    -   Move Validation
+    -   Checkmate Detection
+    -   Stalemate Detection
+    -   Draw Detection
+    -   Resignation
+    -   Game Caching (Redis)
+    -   Disconnection Detection
+    -   Game History
+    -   View Past Games
+    -   Game Analysis using Stockfish (Deployed using [stockfish-docker](https://github.com/samuraitruong/stockfish-docker)) (Disabled on website and app due to server failure)
+    -   Reactions
+    -   Docker Compose for easy deployment
 
 ## Installation
+
 1. Clone the repository
 2. Install the dependencies
     - Flutter
     - Node.js
     - PostgreSQL (with Supabase)
     - Redis (preferably with Docker)
-3. Rename the .env file in the server directory to .env.local and fill in the required environment variables
+3. Rename the .env file in the `server` directory to .env and fill in the required environment variables
 4. Edit server urls in the `lib/constants.dart` file
 5. Run the server
     ```bash
-    cd server
-    npm install
-    npm run dev
+    docker-compose up -d
     ```
 6. Run the client
     ```bash
@@ -55,4 +59,5 @@ This is a scalable online multiplayer chess game (in development) built with Flu
     ```
 
 ## Contribution Guidelines
+
 Read the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information on how to contribute to this project.
